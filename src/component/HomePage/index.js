@@ -10,7 +10,9 @@ import { graphql } from 'react-apollo';
 
 const validToken = gql`
   mutation validToken($token: String!) {
-    validToken(token : $token)
+    validToken(token : $token) {
+      response
+    }
   }
 `;
 
@@ -47,14 +49,14 @@ class HomePage extends Component {
     const token = JSON.parse(check_token)
     const response = await this.props.mutate({
        variables: {
-        token: token.data.register || token.data.login || token.data.logout
+        token: token.data.register || token.data.login
         }
       })
       .catch((error) => {
           this.setState({ redirect: false }, () => this.props.history.push('/'))
         });
       if (response) {
-        if(response.data.validToken === "True"){
+        if(response.data.validToken.response === "True"){
           this.handleTriger();
         }
         else {

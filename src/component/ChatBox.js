@@ -44,7 +44,7 @@ const MessageListView = class extends Component {
     const { data } = this.props;
     return (
       <ul style={{ listStyleType: 'none', padding: 0 }}>
-      {data.messages.map(message => <MessageItem key={message.id} message={message} />)}
+        {data.messages.map(message => <MessageItem key={message.id} message={message} />)}
       </ul>
     );
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Sidebar from './Sidebar/Sidebar';
-import ChatContainer from './ChatContainer';
+import UserList from './UserView'
 import SendingMessages from './SendingMessages';
 import './ChatContainerALL.css';
 import MessageList from './ChatBox';
@@ -10,7 +10,10 @@ import {withRouter} from "react-router-dom";
 
 const validToken = gql`
   mutation validToken($token: String!) {
-    validToken(token : $token)
+    validToken(token : $token) {
+			response
+			id
+		}
   }
 `;
 
@@ -20,15 +23,15 @@ class ChatContainerALL extends Component {
 	    super(props);
 	    this.state = {
 				toggle: true,
-				chatroomId: "1"
+				chatroomId: "1",
+				id: 0
 			}
 	  }
 
-	handleChatRoom = (value) => {
-		  this.setState({
-			chatroomId: value
+	handleChatRoom = async (value) => {
+		  await this.setState({
+				chatroomId: value
 		})
-		console.log(value)		
 	}  
 
 	handleToggle = () => {
@@ -57,7 +60,10 @@ handleResponse = async () => {
 				this.props.history.push('/')
 			});
 			if (response) {
-      	if(response.data.validToken === "True"){
+      	if(response.data.validToken.response === "True"){
+					this.setState({
+						id: response.data.validToken.id
+					})
       	}
       	else {
         	this.props.history.push('/')
@@ -69,7 +75,7 @@ handleResponse = async () => {
   }
 }
 
-  componentWillMount(){     //ili DidMount?
+  componentWillMount(){
     this.handleResponse();
   }
 
@@ -80,22 +86,17 @@ handleResponse = async () => {
 						<aside className="aside aside-1"><Sidebar ChangingRoom={this.handleChatRoom} Hide={this.handleToggle}/> </aside>
 						{this.state.toggle ?
 	  					<aside className="aside aside-2" >Toggle private messages
-	  							<p>blaglad</p>
-	  							<p>blaglad</p>
-	  							<p>blaglad</p>
-	  							<p>blaglad</p>
-	  							<p>blaglad</p>
+	  							<UserList chatroomId = {this.state.chatroomId} id = {this.state.id} ChangingRoom = {this.handleChatRoom}/>
 	  					</aside> : null}
-  					</div>
+  				</div>
   					<div className='columns'>
 	  					<div className="container1">
 	  						<MessageList chatroomId = {this.state.chatroomId}/>
+							</div>
+							<div className='container2'>
+								<SendingMessages chatroomId = {this.state.chatroomId}/>
+							</div>
 						</div>
-						<div className='container2'>
-							<SendingMessages chatroomId = {this.state.chatroomId}/>
-						</div>
-					</div>
-
 			</div>
 			);
 		}

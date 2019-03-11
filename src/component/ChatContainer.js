@@ -19,4 +19,4 @@ class ChatContainer extends Component {
 	}
 }
 
-export default ChatContainer;   //need to export grapfql querry
+export default ChatContainer;

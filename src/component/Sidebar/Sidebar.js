@@ -41,13 +41,13 @@ class Sidebar extends Component {
 
 	handleLogout = async () => {
 		const logged_token = JSON.parse(localStorage.getItem('jwt'));
-		var logout_token = await this.props.mutate( {
+		await this.props.mutate( {
 			variables: {
 				logged_token: logged_token.data.register || logged_token.data.login
 				}
 			}
 		)
-		localStorage.setItem('jwt', JSON.stringify(logout_token))
+		localStorage.removeItem('jwt')
   	this.setState({ logout: true }, () => this.props.history.push('/'))
   }
 
@@ -61,13 +61,13 @@ render() {
 				  			<img className='imgbuttoni'  alt='messagesicon' src={messagesicon}/>
 				  			PRIVATE MESSAGES
 				  	</Button>
-					<Button className="Buttoni" color="warning"><img className='imgbuttoni' alt='travel' src={travelicon}  onClick={()=>this.props.ChangingRoom("2")}/>
+					<Button className="Buttoni" color="warning" onClick={()=>this.props.ChangingRoom("2")}><img className='imgbuttoni' alt='travel' src={travelicon}/>
 						TRAVEL
 					</Button>
-				    <Button className="Buttoni" color="info"><img className='imgbuttoni' alt='sportsicon' src={sportsicon} onClick={()=>this.props.ChangingRoom("3")}/>
+				    <Button className="Buttoni" color="info" onClick={()=>this.props.ChangingRoom("3")}><img className='imgbuttoni' alt='sportsicon' src={sportsicon}/>
 				    	SPORT
 				    </Button>
-					<Button className="Buttoni" color="danger"><img className='imgbuttoni' alt='techicon' src={techicon}  onClick={()=>this.props.ChangingRoom("4")}/>
+					<Button className="Buttoni" color="danger" onClick={()=>this.props.ChangingRoom("4")}><img className='imgbuttoni' alt='techicon' src={techicon}/>
 						TECH
 					</Button>
 					<ButtonDropdown direction="right" isOpen={this.state.dropdownOpen} toggle={this.toggle} className="Buttoni" color="primary">
